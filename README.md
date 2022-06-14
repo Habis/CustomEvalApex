@@ -12,11 +12,12 @@ Based on the records generated in the metadata, you can calculate conditions wri
   3. 1 => Account.Name != 'Acme'
   4. 2 => Opportunity.StageName != 'Closed/Lost'
 5. To execute the rules use the code below, fill the map with the keys you're going to use in the metadata
+
 `Map<String, Sobject> map_sobj = new Map<String, SObject>{'Account' => [SELECT Name FROM Account LIMIT 1],
     'Opportunity' => [SELECT StageName FROM Opportunity LIMIT 1]};
 
-CustomRuleMdtHandler.eval(new Set<String>{'TestMdt'}, map_sobj);
-`
+CustomRuleMdtHandler.eval(new Set<String>{'TestMdt'}, map_sobj);`
+
 the method returns a map (TestMdt => true/false), the key developerName of the Custom Rule and value the result of the condition.
 
 # Evaluate single condition, no mdt needed
