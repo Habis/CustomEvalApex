@@ -49,24 +49,38 @@ public without sharing class CustomEval {
 	}
 
 	private void formatFinalCondition(){
+		System.debug('lstCondition ' + lstCondition);
+		List<String> auxListCond = lstCondition.clone();
+		Integer indexOfWord = 0;
 		for(String word : lstCondition){
 		
 			if(SET_OPERATORS.contains(word))continue;
+
 			//System.debug('word.contains(.) && word.containsNone(")' + word.contains('.') && word.containsNone('"'));
 			if(word.contains('.') && word.containsNone('"')){
 				System.debug('word ' + word);
 				List<String> lstObject = word.split('\\.');
 				System.debug('lstObject' + lstObject);
-				String sobjval = String.valueOf(map_values.get(lstObject[0]).get(lstObject[1]));
-				String operator = lstCondition.get(lstCondition.indexOf(word)+1);
-				String val = lstCondition.get(lstCondition.indexOf(word)+2);
+				System.debug('lstCondition.get(indexOfWord+1) ' + lstCondition.get(indexOfWord+1));
+				String operator = lstCondition.get(indexOfWord+1);
+				String val = lstCondition.get(indexOfWord+2);
 				String buildStr = word + ' ' + operator + ' ' + val;
-				System.debug(buildStr);
-				finalCondition = finalCondition.replace(buildStr, String.valueOf(evaluateStr(sobjval, lstCondition.get(lstCondition.indexOf(word)+1), val.substring( 1, val.length() - 1 ))));
+				System.debug(' buildStr ' +  buildStr + ' indexOfWord ' + indexOfWord);
+
+				if(map_values.containsKey(lstObject[0])){
+					String sobjval = String.valueOf(map_values.get(lstObject[0]).get(lstObject[1]));
+					System.debug('formatFinalCondition REPLACE  ' + buildStr + ' POR   ' +sobjval + ' COND: ' +finalCondition);
+					finalCondition = finalCondition.replace(buildStr, String.valueOf(evaluateStr(sobjval, lstCondition.get(indexOfWord+1), (val.contains('"') ? val.substring( 1, val.length() - 1 ) : val))));
+				}else{
+					finalCondition = finalCondition.replace(buildStr, 'false');
+				}
+				System.debug('calculating finalCondition' + finalCondition);
+				indexOfWord+=4; 
+
 			}
 		
 		}
-		System.debug(finalCondition);
+		System.debug('finalCondition: ' + finalCondition);
 		evaluateFinalStr();
 	}
 
@@ -104,7 +118,7 @@ public without sharing class CustomEval {
 	}
 
 	private Boolean evaluateStr(String sobjval, String operator, String val){
-		System.debug(sobjval +  operator + val);
+		System.debug('METHOD evaluateStr ' + sobjval +  operator + val);
 		switch on operator {
 			when '=='{
 				return sobjval == val;

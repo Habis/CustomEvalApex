@@ -21,26 +21,26 @@ public with sharing class MassEvalHandler {
 	}
 
 	public Boolean eval(){
-		System.debug('MASSEVALHANDLER : ');
 		String exprFinal = expression;
 		CustomEval ceval = new CustomEval(map_values);
 		Boolean evalRes = false;
 		Integer lstSize = 0;
+		lstRes.clear();
 
 		for(String cond : lstConditions){
 			ceval.condition = cond;
 			evalRes = ceval.eval();
-			System.debug('evalRes ' + evalRes);
+
 			lstRes.add(evalRes);
 			lstSize = lstRes.size();
-			System.debug('MASSEVALHANDLER : evaular condición ' + lstSize + ' : ' + cond + ' resultado : ' + evalRes);
+			System.debug('MASSEVALHANDLER : evaular condición ' + lstSize + ' : ' + cond + ' => ' + evalRes);
 			exprFinal = exprFinal.replace(String.valueOf(lstSize), String.valueOf(evalRes));
 		}
 		
 		ceval.condition = exprFinal;
 		res = ceval.eval();
 
-		System.debug('MASSEVALHANDLER :  evaular condición: ' + expression + ' Final lógica ' + exprFinal + ' resultado : ' + res);
+		System.debug('MASSEVALHANDLER :  evaular lógica: ' + expression + ' EXPR FINAL: ' + exprFinal  + ' =>  ' + res);
 
 		return res;
 	}	
