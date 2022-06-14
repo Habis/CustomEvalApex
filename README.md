@@ -13,10 +13,11 @@ Based on the records generated in the metadata, you can calculate conditions wri
   4. 2 => Opportunity.StageName != 'Closed/Lost'
 5. To execute the rules use the code below, fill the map with the keys you're going to use in the metadata
 
-`Map<String, Sobject> map_sobj = new Map<String, SObject>{'Account' => [SELECT Name FROM Account LIMIT 1],
-    'Opportunity' => [SELECT StageName FROM Opportunity LIMIT 1]};
-
-CustomRuleMdtHandler.eval(new Set<String>{'TestMdt'}, map_sobj);`
+```
+Map<String, Sobject> map_sobj = new Map<String, SObject>{'Account' => [SELECT Name FROM Account LIMIT 1],
+'Opportunity' => [SELECT StageName FROM Opportunity LIMIT 1]};
+CustomRuleMdtHandler.eval(new Set<String>{'TestMdt'}, map_sobj);
+```
 
 the method returns a map (TestMdt => true/false), the key developerName of the Custom Rule and value the result of the condition.
 
@@ -27,11 +28,13 @@ For a single condition, you can just user CustomEval class, initialize a constru
 ##Example (single condition):
 It's almost the same as MassEval
 
-`Map<String, Sobject> map_sobj = new Map<String, SObject>{'Account' => [SELECT Name FROM Account LIMIT 1],
-    'Opportunity' => [SELECT StageName FROM Opportunity LIMIT 1]};
- 
+```
+Map<String, Sobject> map_sobj = new Map<String, SObject>{'Account' => [SELECT Name FROM Account LIMIT 1],
+'Opportunity' => [SELECT StageName FROM Opportunity LIMIT 1]};
+
  CustomEval ceval = new CustomEval('Account.Name != 'Acme', map_sobj);
- ceval.eval()`
+ ceval.eval()
+ ```
  
  eval() returns the result of the conditional
  
